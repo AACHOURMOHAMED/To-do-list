@@ -7,6 +7,7 @@ import './style.css';
 // Declare HTML elements
 const mainInput = document.getElementById('main-input');
 const listOfItems = document.querySelector('.list');
+const clearAll = document.querySelector('.clear-all');
 
 // Create array to store items
 let itemArray = [] || JSON.parse(localStorage.getItem('items'));
@@ -175,6 +176,16 @@ const getItemsLocal = () => {
     item.addEventListener('click', () => {
       removeItems(item.children[0].parentNode.parentNode);
     });
+  });
+  clearAll.addEventListener('click', () => {
+    const localItems = localStorage.getItem('items');
+    const parsedData = JSON.parse(localItems);
+    const checkDelete = parsedData.filter((item) => item.completed === false);
+    for (let i = 0; i < checkDelete.length; i += 1) {
+      checkDelete[i].index = i + 1;
+    }
+    localStorage.setItem('items', JSON.stringify(checkDelete));
+    window.location.reload();
   });
   localStorage.setItem('items', JSON.stringify(itemArray));
 };
